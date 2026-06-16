@@ -1,0 +1,18 @@
+# Build output
+build/
+DerivedData/
+*.xcarchive
+
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+
+# macOS
+.DS_Store
+
+# Phase 0 debug log
+MINT-phase0-log.txt
+
+# Internal working docs / design notes (kept local)
+WORKSPACE/
