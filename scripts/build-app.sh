@@ -62,3 +62,22 @@ rm -rf "$STAGE"
 
 echo "✓ Built $APP"
 echo "✓ Packaged $DMG ($(du -h "$DMG" | cut -f1))"
+
+# Sign the DMG with EdDSA so Sparkle clients can verify the update.
+# sign_update finds the private key in the login Keychain automatically.
+VERSION=$(grep 'MARKETING_VERSION' "$APP_NAME.xcodeproj/project.pbxproj" | head -1 | sed 's/.*= //;s/;//;s/ //')
+BUILD_NUMBER=$(grep 'CURRENT_PROJECT_VERSION' "$APP_NAME.xcodeproj/project.pbxproj" | head -1 | sed 's/.*= //;s/;//;s/ //')
+SIGN_UPDATE="$DERIVED/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update"
+if [ -x "$SIGN_UPDATE" ]; then
+  echo "▸ Sign DMG for Sparkle"
+  EDDSA_SIG=$("$SIGN_UPDATE" "$DMG" 2>/dev/null | sed 's/.*sparkle:edSignature="\([^"]*\)".*/\1/')
+  DMG_SIZE=$(stat -f%z "$DMG")
+  echo ""
+  echo "  *** appcast.xml <enclosure> values for v$VERSION:"
+  echo "      sparkle:version=\"$BUILD_NUMBER\""
+  echo "      sparkle:shortVersionString=\"$VERSION\""
+  echo "      sparkle:edSignature=\"$EDDSA_SIG\""
+  echo "      length=\"$DMG_SIZE\""
+else
+  echo "  Note: sign_update not found — run the build once to resolve Sparkle, then re-run."
+fi
