@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>MINT</title>
+        <link>https://github.com/yogiee/MINT</link>
+        <description>MINT update feed</description>
+        <language>en</language>
+
+        <!-- Add new releases at the top. Sparkle picks the highest sparkle:version that
+             satisfies sparkle:minimumSystemVersion. Run ./scripts/build-app.sh to get the
+             edSignature and length values to paste into the <enclosure> below. -->
+
+        <item>
+            <title>MINT 0.2.0</title>
+            <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>
+            <sparkle:version>2</sparkle:version>
+            <sparkle:shortVersionString>0.2.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[
+                <h3>MINT 0.2.0</h3>
+                <ul>
+                    <li>Added Sparkle auto-update — MINT can now update itself automatically</li>
+                    <li>New Updates tab in Settings: choose Every Day, Every Week, or Manual</li>
+                    <li>Check for Updates… added to the app menu</li>
+                </ul>
+            ]]></description>
+            <enclosure
+                url="https://github.com/yogiee/MINT/releases/download/v0.2.0/MINT.dmg"
+                sparkle:version="2"
+                sparkle:shortVersionString="0.2.0"
+                sparkle:edSignature="u+3dibZqc4KC/qAA5E9j5Fj+ZAC+ZCM2GUxBLfUXMykGfoHfk6e5KHjuB84uuzXSnCfYy6pvYivYgF78ZhpZDg=="
+                length="5779357"
+                type="application/x-apple-diskimage"/>
+        </item>
+
+    </channel>
+</rss>

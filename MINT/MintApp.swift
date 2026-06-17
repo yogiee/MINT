@@ -4,6 +4,7 @@ import SwiftUI
 struct MintApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
     @StateObject private var recents = RecentStore()   // shared across all windows
+    private let updater = UpdaterService.shared         // starts Sparkle at launch
 
     var body: some Scene {
         // Each window owns its own state, so multiple windows are fully
@@ -19,6 +20,13 @@ struct MintApp: App {
         .defaultSize(width: 820, height: 580)
         // Don't reopen last session's files (often temp/deleted); Open-With drives windows.
         .restorationBehavior(.disabled)
+        .commands {
+            CommandGroup(after: .appInfo) {
+                Button("Check for Updates…") {
+                    UpdaterService.shared.checkForUpdates()
+                }
+            }
+        }
 
         Settings {
             SettingsView()

@@ -25,6 +25,8 @@ struct SettingsView: View {
         TabView {
             GeneralSettingsView()
                 .tabItem { Label("General", systemImage: "textformat.size") }
+            UpdatesSettingsView()
+                .tabItem { Label("Updates", systemImage: "arrow.triangle.2.circlepath") }
             AboutSettingsView()
                 .tabItem { Label("About", systemImage: "info.circle") }
         }
@@ -88,6 +90,37 @@ struct GeneralSettingsView: View {
         ("Frame rate", "23.976 FPS"),
         ("Bit rate", "2 600 kb/s"),
     ]
+}
+
+struct UpdatesSettingsView: View {
+    @State private var schedule = UpdaterService.shared.updateCheckSchedule
+
+    var body: some View {
+        Form {
+            Section("Automatic Updates") {
+                Picker("Check for updates", selection: $schedule) {
+                    ForEach(UpdateCheckSchedule.allCases) { option in
+                        Text(option.displayName).tag(option)
+                    }
+                }
+                .pickerStyle(.radioGroup)
+                .onChange(of: schedule) { _, newValue in
+                    UpdaterService.shared.updateCheckSchedule = newValue
+                }
+                Text("Updates are downloaded and verified automatically, then installed on quit.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                Button("Check for Updates Now…") {
+                    UpdaterService.shared.checkForUpdates()
+                }
+            }
+        }
+        .formStyle(.grouped)
+        .frame(height: 420)
+    }
 }
 
 struct AboutSettingsView: View {
