@@ -107,17 +107,18 @@ struct SearchResults: View {
 
 struct SummaryCard: View {
     let report: MediaReport
+    @AppStorage(Prefs.fontSizeKey) private var fontSize = Prefs.fontSizeDefault
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
             ThumbnailView(url: report.url, fallbackSymbol: icon)
             VStack(alignment: .leading, spacing: 6) {
                 Text(report.url.lastPathComponent)
-                    .font(.title3.weight(.semibold))
+                    .font(.title2.weight(.semibold))
                     .lineLimit(2)
                     .truncationMode(.middle)
                 Text(report.summaryChips.joined(separator: "  ·  "))
-                    .font(.system(.callout, design: .monospaced))
+                    .font(.system(size: fontSize, design: .monospaced))
                     .foregroundStyle(.secondary)
                     .textSelection(.enabled)
                     .fixedSize(horizontal: false, vertical: true)

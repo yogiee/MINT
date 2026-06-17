@@ -13,6 +13,30 @@
              edSignature and length values to paste into the <enclosure> below. -->
 
         <item>
+            <title>MINT 0.3.0</title>
+            <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>0.3.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[
+                <h3>MINT 0.3.0</h3>
+                <ul>
+                    <li>Toggle the recents sidebar with ⌃⌘S (View ▸ Show Sidebar)</li>
+                    <li>Larger filename in the summary card</li>
+                    <li>Spec subtitle now follows your Settings font size</li>
+                    <li>Focus outlines now appear only during keyboard navigation</li>
+                </ul>
+            ]]></description>
+            <enclosure
+                url="https://github.com/yogiee/MINT/releases/download/v0.3.0/MINT.dmg"
+                sparkle:version="3"
+                sparkle:shortVersionString="0.3.0"
+                sparkle:edSignature="izVCWq+0ecO5C2vJY/niwhomO9HDO+uSWBJnSlADAkf2tNOaEZEPgzbOq+vkfcOB7vNtQPAttgSjg8c2bHdoCg=="
+                length="5795799"
+                type="application/x-apple-diskimage"/>
+        </item>
+
+        <item>
             <title>MINT 0.2.0</title>
             <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>
             <sparkle:version>2</sparkle:version>

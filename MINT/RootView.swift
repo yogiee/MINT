@@ -11,6 +11,7 @@ struct WindowRoot: View {
 
     @StateObject private var model = WindowModel()
     @State private var hasAppeared = false
+    @State private var clearedFocus = false
     @State private var columnVisibility: NavigationSplitViewVisibility = .detailOnly
     @State private var selectedTrack: Track.ID?
     @State private var mode: InspectorMode = .pretty
@@ -31,6 +32,7 @@ struct WindowRoot: View {
                          searchVisible: $searchVisible)
         }
         .tint(.mintAccent)
+        .background(WindowAccessor { clearInitialFocus($0) })
         .onChange(of: searchVisible) { if !searchVisible { search = "" } }
         .toolbar { appearanceToolbar }
         .onAppear {
@@ -64,6 +66,16 @@ struct WindowRoot: View {
             }
             .help("Light, Dark, or System appearance")
         }
+    }
+
+    /// Drop the window's initial first responder so no focus ring shows on launch.
+    /// macOS otherwise auto-focuses the first control (the sidebar toggle), drawing a
+    /// ring even though the user hasn't touched the keyboard. Clearing it once means
+    /// rings appear only when the user actually Tabs into a control.
+    private func clearInitialFocus(_ window: NSWindow) {
+        guard !clearedFocus else { return }
+        clearedFocus = true
+        DispatchQueue.main.async { window.makeFirstResponder(nil) }
     }
 
     /// Open a file: into this window if empty, otherwise a new window.
@@ -299,6 +311,21 @@ struct SearchBar: View {
         .background(.bar)
         .onAppear { focused = true }
     }
+}
+
+/// Hands back the NSWindow hosting this view, once, after it's attached.
+struct WindowAccessor: NSViewRepresentable {
+    let onResolve: (NSWindow) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            if let window = view.window { onResolve(window) }
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }
 
 struct EmptyStateView: View {
