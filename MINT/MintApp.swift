@@ -21,6 +21,7 @@ struct MintApp: App {
         // Don't reopen last session's files (often temp/deleted); Open-With drives windows.
         .restorationBehavior(.disabled)
         .commands {
+            SidebarCommands()   // View ▸ Hide/Show Sidebar (⌃⌘S)
             CommandGroup(after: .appInfo) {
                 Button("Check for Updates…") {
                     UpdaterService.shared.checkForUpdates()

@@ -57,8 +57,13 @@ ln -s /Applications "$STAGE/Applications"
 hdiutil create -volname "$APP_NAME" -srcfolder "$STAGE" -ov -format UDZO "$DMG" >/dev/null
 rm -rf "$STAGE"
 
-# Avoid the build copy polluting "Open With" with a duplicate registration.
-"$LSREGISTER" -u "$APP" 2>/dev/null || true
+# Keep Finder's "Open With" menu clean. Spotlight auto-registers any .app it
+# finds, so build-tree copies pile up as stale "MINT" entries. Mark the build
+# tree as never-index, and unregister any build-tree MINT.app LS already knows.
+touch "$BUILD/.metadata_never_index"
+while IFS= read -r dev_app; do
+  "$LSREGISTER" -u "$dev_app" 2>/dev/null || true
+done < <(find "$BUILD" -maxdepth 6 -name "MINT.app" -type d 2>/dev/null)
 
 echo "✓ Built $APP"
 echo "✓ Packaged $DMG ($(du -h "$DMG" | cut -f1))"
